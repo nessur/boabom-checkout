@@ -33,7 +33,6 @@ class User < ApplicationRecord
 
     unless self.customer_id
       self.customer_id = customer.id
-      self.save
     end
 
     price = Rails.application.secrets.product_price
