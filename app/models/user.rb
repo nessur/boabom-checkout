@@ -22,7 +22,7 @@ class User < ApplicationRecord
     end
 
     customer = if self.customer_id
-      Stirpe::Customer.retrieve(self.customer_id)
+      Stripe::Customer.retrieve(self.customer_id)
     else
       Stripe::Customer.create(
         :email => self.email,
@@ -38,8 +38,6 @@ class User < ApplicationRecord
 
     price = Rails.application.secrets.product_price
     title = Rails.application.secrets.product_title
-
-    binding.pry
 
     charge = Stripe::Charge.create(
       :customer    => customer.id,
