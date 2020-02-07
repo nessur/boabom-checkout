@@ -20,17 +20,33 @@ class User < ApplicationRecord
       self.errors[:base] << 'Could not verify card.'
       raise ActiveRecord::RecordInvalid.new(self)
     end
-    customer = Stripe::Customer.create(
-      :email => self.email,
-      :card  => self.stripeToken
-    )
+
+    customer = if user.customer_id
+      Stirpe::Customer.retrieve(user.customer_id)
+    else
+      Stripe::Customer.create(
+        :email => self.email,
+        :card  => self.stripeToken,
+        name: self.name
+      )
+    end
+
+    unless user.customer_id
+      user.customer_id = customer.id
+      user.save
+    end
+
     price = Rails.application.secrets.product_price
     title = Rails.application.secrets.product_title
+
+    binding.pry
+
     charge = Stripe::Charge.create(
       :customer    => customer.id,
       :amount      => "#{price}",
       :description => "#{title}",
-      :currency    => 'usd'
+      :currency    => 'usd',
+      receipt_email: user.email
     )
     Rails.logger.info("Stripe transaction for #{self.email}") if charge[:paid] == true
   rescue Stripe::InvalidRequestError => e
@@ -46,14 +62,14 @@ class User < ApplicationRecord
   end
 
   def subscribe
-    mailchimp = Gibbon::Request.new(api_key: Rails.application.secrets.mailchimp_api_key)
-    list_id = Rails.application.secrets.mailchimp_list_id
-    result = mailchimp.lists(list_id).members.create(
-      body: {
-        email_address: self.email,
-        status: 'subscribed'
-    })
-    Rails.logger.info("Subscribed #{self.email} to MailChimp") if result
+    # mailchimp = Gibbon::Request.new(api_key: Rails.application.secrets.mailchimp_api_key)
+    # list_id = Rails.application.secrets.mailchimp_list_id
+    # result = mailchimp.lists(list_id).members.create(
+    #   body: {
+    #     email_address: self.email,
+    #     status: 'subscribed'
+    # })
+    # Rails.logger.info("Subscribed #{self.email} to MailChimp") if result
   end
 
 end

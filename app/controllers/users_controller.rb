@@ -4,10 +4,32 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    @customers = @users.map(&:customer_id).compact.map{|id|
+      Stripe::Customer.retrieve(id)
+    }.index_by(&:id)
+
+    @subscriptions = @customers.keys.map {|customer|
+      Stripe::Subscription.list(customer: customer).data
+    }.flatten.group_by(&:customer)
+    
   end
 
   def show
     @user = User.find(params[:id])
+    @customer = 
+      begin 
+        Stripe::Customer.retrieve(@user.customer_id) if @user.customer_id
+      rescue Stripe::InvalidRequestError => ex
+        logger.error("Customer not found for #{@user.customer_id}")
+      end
+
+    @subscriptions = 
+      begin 
+        Stripe::Subscription.list(customer: @user.customer_id) if @user.customer_id
+      rescue Stripe::InvalidRequestError => ex
+        logger.error("Subscriptions not found for Stripe ID #{@user.customer_id}")
+      end
+
     unless current_user.admin?
       unless @user == current_user
         redirect_to root_path, :alert => "Access denied."

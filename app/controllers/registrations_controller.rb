@@ -14,4 +14,9 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up) do |user|
+      user.permit!
+    end
+  end
 end

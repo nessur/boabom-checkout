@@ -6,7 +6,9 @@
         <tbody>
           <% @users.each do |user| %>
             <tr>
-              <%= render user %>
+              <%= render partial: 'user', locals: {
+                user: user, customer: @customers[user.customer_id], subscriptions: @subscriptions[user.customer_id]
+                } %>
             </tr>
           <% end %>
         </tbody>

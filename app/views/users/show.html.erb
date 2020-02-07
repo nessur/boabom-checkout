@@ -1,3 +1,31 @@
 <h3>User</h3>
 <p>Name: <%= @user.name if @user.name %></p>
 <p>Email: <%= @user.email if @user.email %></p>
+
+<td>
+	<p>Stripe ID: <%= @customer&.id %>
+</td>
+
+<td>
+	<p style="width: 300px">Subscriptions: </p>
+    <% @subscriptions&.map do |s| %>
+    	<p> 
+		<%= s.items.data.map{|m| "#{Stripe::Product.retrieve(m.plan.product).name} - #{m.plan.nickname} $#{m.plan.amount / 100.0}"} %>	 </p>
+	<% end %>
+</td>
+
+<td>
+	<% if @customer %>
+
+		<p> Charges: </p>
+
+		<% Stripe::Charge.list(customer: @customer.id).data.each do |charge| %>
+
+			<p> <%= "#{charge.description} - $#{charge.amount / 100.00} at #{Time.at charge.created } " %> </p>
+			<p> <%= link_to "Receipt Link", charge.receipt_url %> </p>
+
+		<% end %>
+
+	<% end %>
+
+</td>

@@ -13,6 +13,7 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.5'
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'pry'
 end
 group :development do
   gem 'web-console', '>= 3.3.0'
