@@ -44,7 +44,7 @@ class User < ApplicationRecord
       :amount      => "#{price}",
       :description => "#{title}",
       :currency    => 'usd',
-      receipt_email: user.email
+      receipt_email: self.email
     )
     Rails.logger.info("Stripe transaction for #{self.email}") if charge[:paid] == true
   rescue Stripe::InvalidRequestError => e
