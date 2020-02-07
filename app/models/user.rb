@@ -21,8 +21,8 @@ class User < ApplicationRecord
       raise ActiveRecord::RecordInvalid.new(self)
     end
 
-    customer = if user.customer_id
-      Stirpe::Customer.retrieve(user.customer_id)
+    customer = if self.customer_id
+      Stirpe::Customer.retrieve(self.customer_id)
     else
       Stripe::Customer.create(
         :email => self.email,
@@ -31,9 +31,9 @@ class User < ApplicationRecord
       )
     end
 
-    unless user.customer_id
-      user.customer_id = customer.id
-      user.save
+    unless self.customer_id
+      self.customer_id = customer.id
+      self.save
     end
 
     price = Rails.application.secrets.product_price
