@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200207202748) do
+ActiveRecord::Schema.define(version: 20200209214721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "boabom_classes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type"
+    t.decimal  "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "boabom_courses", force: :cascade do |t|
+    t.string   "name"
+    t.string   "kind_of_class"
+    t.decimal  "amount"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
