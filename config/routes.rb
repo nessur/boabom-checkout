@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :boabom_courses
+    resources :course_subscriptions
 
     root to: "users#index"
   end

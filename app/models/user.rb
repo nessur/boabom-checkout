@@ -4,6 +4,9 @@ class User < ApplicationRecord
   before_create :pay_with_card, unless: Proc.new { |user| user.admin? }
   after_create :sign_up_for_mailing_list
 
+  has_many :course_subscriptions
+  has_many :boabom_courses, through: :course_subscription
+
   attr_accessor :stripeToken
 
   def set_default_role
