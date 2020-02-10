@@ -5,7 +5,7 @@ class User < ApplicationRecord
   after_create :sign_up_for_mailing_list
 
   has_many :course_subscriptions
-  has_many :boabom_courses, through: :course_subscription
+  has_many :boabom_courses, through: :course_subscriptions
 
   attr_accessor :stripeToken
 
