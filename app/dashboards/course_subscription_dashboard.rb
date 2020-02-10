@@ -11,6 +11,9 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
     id: Field::Number,
     user: Field::BelongsTo.with_options(searchable: true, searchable_field: 'name'),
     boabom_course: Field::BelongsTo.with_options(searchable: true, searchable_field: 'name'),
+    discount: Field::Number.with_options(decimals: 0, suffix: '%%'),
+    amount: Field::Number.with_options(searchable: false, prefix: '$'),
+    discounted_amount: Field::Number.with_options(searchable: false, prefix: '$'),
     start_date: Field::DateTime,
     end_date: Field::DateTime,
     created_at: Field::DateTime,
@@ -26,6 +29,9 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   id
   user
   boabom_course
+  amount
+  discount
+  discounted_amount
   start_date
   ].freeze
 
@@ -35,6 +41,9 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   id
   user
   boabom_course
+  amount
+  discount
+  discounted_amount
   start_date
   end_date
   created_at
@@ -47,6 +56,7 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
   user
   boabom_course
+  discount
   start_date
   end_date
   ].freeze
@@ -66,7 +76,7 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how course subscriptions are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(course_subscription)
-  #   "CourseSubscription ##{course_subscription.id}"
-  # end
+  def display_resource(course_subscription)
+    "CourseSubscription ##{course_subscription.boabom_course.name}"
+  end
 end

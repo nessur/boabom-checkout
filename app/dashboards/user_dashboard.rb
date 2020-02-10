@@ -24,6 +24,10 @@ class UserDashboard < Administrate::BaseDashboard
     name: Field::String,
     role: Field::String.with_options(searchable: false),
     customer_id: Field::String,
+    boabom_courses: Field::HasMany,
+    courses_total: Field::Number.with_options(searchable: false, prefix: '$'),
+    discounted_total: Field::Number.with_options(searchable: false, prefix: '$'),
+    orders: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,6 +40,9 @@ class UserDashboard < Administrate::BaseDashboard
   email
   name
   role
+  courses_total
+  discounted_total
+  boabom_courses
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -44,16 +51,15 @@ class UserDashboard < Administrate::BaseDashboard
   id
   email
   name
+  courses_total
+  discounted_total
+  boabom_courses
+  orders
   role
   customer_id
-  reset_password_token
-  reset_password_sent_at
-  remember_created_at
   sign_in_count
   current_sign_in_at
   last_sign_in_at
-  current_sign_in_ip
-  last_sign_in_ip
   created_at
   updated_at
   ].freeze

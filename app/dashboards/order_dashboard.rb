@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class BoabomCourseDashboard < Administrate::BaseDashboard
+class OrderDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,13 +8,18 @@ class BoabomCourseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    user: Field::BelongsTo.with_options(searchable: true),
     id: Field::Number,
-    name: Field::String,
-    kind_of_class: Field::String,
-    amount: Field::Number.with_options(searchable: false, prefix: '$'),
-    users: Field::HasMany,
+    paid: Field::Boolean,
+    paid_at: Field::DateTime,
+    payment_month: Field::Number,
+    emailed: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    total_order: Field::Number.with_options(prefix: '$'),
+    discounted_total_order: Field::Number.with_options(prefix: '$'),
+    course_subscriptions: Field::HasMany,
+    boabom_courses: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,19 +29,28 @@ class BoabomCourseDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
   id
-  name
-  kind_of_class
-  amount
-  users
+  user
+  payment_month
+  total_order
+  discounted_total_order
+  paid
+  paid_at
+  boabom_courses
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
+  paid
+  paid_at
+  payment_month
+  user
+  total_order
+  discounted_total_order
+  boabom_courses
+  course_subscriptions
   id
-  name
-  kind_of_class
-  amount
+  emailed
   created_at
   updated_at
   ].freeze
@@ -45,9 +59,12 @@ class BoabomCourseDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  name
-  kind_of_class
-  amount
+  user
+  course_subscriptions
+  payment_month
+  paid
+  paid_at
+  emailed
   ].freeze
 
   # COLLECTION_FILTERS
@@ -62,10 +79,10 @@ class BoabomCourseDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how boabom courses are displayed
+  # Overwrite this method to customize how orders are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(boabom_course)
-    "#{boabom_course.name} - #{boabom_course.kind_of_class}"
-  end
+  # def display_resource(order)
+  #   "Order ##{order.id}"
+  # end
 end

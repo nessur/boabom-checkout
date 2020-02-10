@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200209220024) do
+ActiveRecord::Schema.define(version: 20200210194118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,25 @@ ActiveRecord::Schema.define(version: 20200209220024) do
     t.date     "end_date"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.decimal  "discount"
+  end
+
+  create_table "course_subscriptions_orders", id: false, force: :cascade do |t|
+    t.integer "course_subscription_id", null: false
+    t.integer "order_id",               null: false
+    t.index ["course_subscription_id", "order_id"], name: "idx_course_sub_order", using: :btree
+    t.index ["order_id", "course_subscription_id"], name: "idx_order_course_sub", using: :btree
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.boolean  "paid"
+    t.datetime "paid_at"
+    t.integer  "payment_month"
+    t.boolean  "emailed"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["user_id"], name: "index_orders_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,8 +75,10 @@ ActiveRecord::Schema.define(version: 20200209220024) do
     t.string   "name"
     t.integer  "role"
     t.string   "customer_id"
+    t.integer  "payment_day"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "orders", "users"
 end

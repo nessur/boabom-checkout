@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :users
     resources :boabom_courses
     resources :course_subscriptions
+    resources :orders
 
     root to: "users#index"
   end
