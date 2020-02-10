@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :boabom_courses
     resources :course_subscriptions
     resources :orders
+    resources :payments
 
     root to: "users#index"
   end

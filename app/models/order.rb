@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   has_many :course_subscriptions_orders
   has_many :course_subscriptions, through: :course_subscriptions_orders
   has_many :boabom_courses, through: :course_subscriptions
+  has_many :payments
 
   def total_order
   	boabom_courses.sum(:amount)

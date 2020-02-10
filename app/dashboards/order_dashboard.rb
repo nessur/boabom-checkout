@@ -19,7 +19,8 @@ class OrderDashboard < Administrate::BaseDashboard
     total_order: Field::Number.with_options(prefix: '$'),
     discounted_total_order: Field::Number.with_options(prefix: '$'),
     course_subscriptions: Field::HasMany,
-    boabom_courses: Field::HasMany
+    boabom_courses: Field::HasMany,
+    payments: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -42,6 +43,7 @@ class OrderDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
   paid
+  payments
   paid_at
   payment_month
   user
@@ -82,7 +84,7 @@ class OrderDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how orders are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(order)
-  #   "Order ##{order.id}"
-  # end
+  def display_resource(order)
+    "Order ##{order.id} - #{order.discounted_total_order}"
+  end
 end

@@ -7,8 +7,13 @@ class User < ApplicationRecord
   has_many :course_subscriptions
   has_many :boabom_courses, through: :course_subscriptions
   has_many :orders
+  has_many :payments, through: :orders
 
   attr_accessor :stripeToken
+
+  def number_unpaid_orders
+    orders.where(paid: false).count
+  end
 
   def courses_total
     boabom_courses.sum(:amount)
