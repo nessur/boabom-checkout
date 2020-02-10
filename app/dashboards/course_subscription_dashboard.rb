@@ -9,8 +9,8 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    user_id: Field::Number,
-    boabom_course_id: Field::Number,
+    user: Field::BelongsTo.with_options(searchable: true, searchable_field: 'name'),
+    boabom_course: Field::BelongsTo.with_options(searchable: true, searchable_field: 'name'),
     start_date: Field::DateTime,
     end_date: Field::DateTime,
     created_at: Field::DateTime,
@@ -24,8 +24,8 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
   id
-  user_id
-  boabom_course_id
+  user
+  boabom_course
   start_date
   ].freeze
 
@@ -33,8 +33,8 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
   id
-  user_id
-  boabom_course_id
+  user
+  boabom_course
   start_date
   end_date
   created_at
@@ -45,8 +45,8 @@ class CourseSubscriptionDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-  user_id
-  boabom_course_id
+  user
+  boabom_course
   start_date
   end_date
   ].freeze

@@ -63,7 +63,7 @@ class BoabomCourseDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how boabom courses are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(boabom_course)
-  #   "BoabomCourse ##{boabom_course.id}"
-  # end
+  def display_resource(boabom_course)
+    "#{boabom_course.name} - #{boabom_course.kind_of_class}"
+  end
 end

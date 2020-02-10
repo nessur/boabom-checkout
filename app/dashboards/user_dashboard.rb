@@ -34,8 +34,8 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
   id
   email
-  encrypted_password
-  reset_password_token
+  name
+  role
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -43,7 +43,9 @@ class UserDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
   id
   email
-  encrypted_password
+  name
+  role
+  customer_id
   reset_password_token
   reset_password_sent_at
   remember_created_at
@@ -54,9 +56,6 @@ class UserDashboard < Administrate::BaseDashboard
   last_sign_in_ip
   created_at
   updated_at
-  name
-  role
-  customer_id
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -64,15 +63,6 @@ class UserDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
   email
-  encrypted_password
-  reset_password_token
-  reset_password_sent_at
-  remember_created_at
-  sign_in_count
-  current_sign_in_at
-  last_sign_in_at
-  current_sign_in_ip
-  last_sign_in_ip
   name
   role
   customer_id
@@ -93,7 +83,7 @@ class UserDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how users are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(user)
-  #   "User ##{user.id}"
-  # end
+  def display_resource(user)
+    "#{user.name.empty? ? user.id : user.name} "
+  end
 end
