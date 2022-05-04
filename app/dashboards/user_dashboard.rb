@@ -39,8 +39,8 @@ class UserDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
   id
-  email
   name
+  email
   role
   courses_total
   discounted_total
@@ -52,8 +52,8 @@ class UserDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
   id
-  email
   name
+  email
   courses_total
   discounted_total
   boabom_courses
